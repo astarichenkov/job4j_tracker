@@ -15,6 +15,13 @@ public class SqlTracker implements Store {
 
     private Connection cn;
 
+    public SqlTracker() {
+    }
+
+    public SqlTracker(Connection connection) {
+        this.cn = connection;
+    }
+
     public void init() {
         try (InputStream in = SqlTracker.class.getClassLoader().getResourceAsStream("app.properties")) {
             Properties config = new Properties();
@@ -119,7 +126,9 @@ public class SqlTracker implements Store {
         }
         if (resultList.size() > 0) {
             return resultList.get(0);
-        } else return null;
+        } else {
+            return null;
+        }
     }
 
     public List<Item> rsToItemsList(ResultSet rs) {
