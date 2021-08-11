@@ -40,10 +40,14 @@ public class SqlTracker implements Store {
     @Override
     public Item add(Item item) {
         try (PreparedStatement statement =
-                     cn.prepareStatement("insert into items(name, created) values (?, ?)")) {
+                     cn.prepareStatement("insert into items(name, created) values (?, ?)", Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, item.getName());
             statement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
             statement.execute();
+            ResultSet keys = statement.getGeneratedKeys();
+            if (keys.next()) {
+                item.setId(keys.getInt(1));
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
