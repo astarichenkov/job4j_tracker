@@ -8,6 +8,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 import ru.job4j.tracker.model.Item;
 
+import javax.management.Query;
 import java.util.List;
 
 public class HbmTracker implements Store, AutoCloseable {
@@ -39,26 +40,31 @@ public class HbmTracker implements Store, AutoCloseable {
 
     @Override
     public boolean replace(int id, Item item) {
-        item.setId(id);
         Session session = sf.openSession();
         session.beginTransaction();
-        session.update(item);
+        int rsl = session.createQuery(
+                        "update Item i set i.name = :name, i.created = :created," +
+                                " i.description = :desc where i.id = :fId"
+                ).setParameter("name", item.getName())
+                .setParameter("created", item.getCreated())
+                .setParameter("desc", item.getDescription())
+                .executeUpdate();
         session.getTransaction().commit();
-        boolean rsl = session.getTransaction().getStatus() == TransactionStatus.COMMITTED;
         session.close();
-        return rsl;
+        return rsl == 1;
     }
 
     @Override
     public boolean delete(int id) {
-        Item item = findById(id);
         Session session = sf.openSession();
         session.beginTransaction();
-        session.delete(item);
+        int rsl = session.createQuery(
+                        "delete from Item i where i.id = :fId"
+                ).setParameter("fId", id)
+                .executeUpdate();
         session.getTransaction().commit();
-        boolean rsl = session.getTransaction().getStatus() == TransactionStatus.COMMITTED;
         session.close();
-        return rsl;
+        return rsl == 1;
     }
 
     @Override
