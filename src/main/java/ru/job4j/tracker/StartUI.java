@@ -6,6 +6,8 @@ import ru.job4j.tracker.input.Input;
 import ru.job4j.tracker.input.ValidateInput;
 import ru.job4j.tracker.output.ConsoleOutput;
 import ru.job4j.tracker.output.Output;
+import ru.job4j.tracker.store.HbmTracker;
+import ru.job4j.tracker.store.MemTracker;
 import ru.job4j.tracker.store.SqlTracker;
 import ru.job4j.tracker.store.Store;
 
@@ -13,7 +15,7 @@ import java.util.List;
 
 public class StartUI {
 
-    public void init(Input input, Store tracker, List<UserAction> actions) {
+    public void init(Input input, Store tracker, List<UserAction> actions) throws InterruptedException {
         boolean run = true;
         while (run) {
             showMenu(actions);
@@ -35,7 +37,7 @@ public class StartUI {
                 new ConsoleInput()
         );
         Output output = new ConsoleOutput();
-        try (Store tracker = new SqlTracker()) {
+        try (Store tracker = new HbmTracker()) {
             tracker.init();
             List<UserAction> actions = List.of(
                     new CreateAction(output),

@@ -1,6 +1,8 @@
 package ru.job4j.tracker.store;
 
 import ru.job4j.tracker.model.Item;
+import ru.job4j.tracker.react.Observe;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -24,6 +26,13 @@ public class MemTracker implements Store {
 
     public List<Item> findAll() {
         return items;
+    }
+
+    public void getByReact(Observe<Item> observe) throws InterruptedException {
+        for (Item datum : items) {
+            Thread.sleep(500);
+            observe.receive(datum);
+        }
     }
 
     public Item findById(int id) {

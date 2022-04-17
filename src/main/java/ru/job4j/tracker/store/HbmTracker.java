@@ -7,6 +7,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 import ru.job4j.tracker.model.Item;
+import ru.job4j.tracker.react.Observe;
 
 import javax.management.Query;
 import java.util.List;
@@ -97,5 +98,13 @@ public class HbmTracker implements Store, AutoCloseable {
         session.getTransaction().commit();
         session.close();
         return result;
+    }
+
+    @Override
+    public void getByReact(Observe<Item> observe) throws InterruptedException {
+        for (Item datum : findAll()) {
+            Thread.sleep(200);
+            observe.receive(datum);
+        }
     }
 }

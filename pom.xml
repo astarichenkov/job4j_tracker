@@ -171,10 +171,14 @@
                     <driver>${db.driver}</driver>
                     <username>${db.username}</username>
                     <password>${db.password}</password>
+                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
                 </configuration>
                 <executions>
                     <execution>
                         <phase>process-resources</phase>
+<!--                        <configuration>-->
+<!--                            <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>-->
+<!--                        </configuration>-->
                         <goals>
                             <goal>clearCheckSums</goal>
                             <goal>update</goal>

@@ -21,12 +21,11 @@ public class FindAllAction implements UserAction {
     }
 
     @Override
-    public boolean execute(Input input, Store tracker) {
-        List<Item> items = tracker.findAll();
-        for (Item item : items) {
-            out.println(item);
-        }
+    public boolean execute(Input input, Store tracker) throws InterruptedException {
+        tracker.getByReact(System.out::println);
         return true;
     }
+
+
 
 }

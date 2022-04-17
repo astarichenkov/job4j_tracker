@@ -1,6 +1,7 @@
 package ru.job4j.tracker.store;
 
 import ru.job4j.tracker.model.Item;
+import ru.job4j.tracker.react.Observe;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -101,6 +102,14 @@ public class SqlTracker implements Store {
             throwables.printStackTrace();
         }
         return resultList;
+    }
+
+    @Override
+    public void getByReact(Observe<Item> observe) throws InterruptedException {
+        for (Item datum : findAll()) {
+            Thread.sleep(200);
+            observe.receive(datum);
+        }
     }
 
     @Override
