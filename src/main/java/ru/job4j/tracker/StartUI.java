@@ -37,7 +37,7 @@ public class StartUI {
                 new ConsoleInput()
         );
         Output output = new ConsoleOutput();
-        try (Store tracker = new HbmTracker()) {
+        try (Store tracker = new MemTracker()) {
             tracker.init();
             List<UserAction> actions = List.of(
                     new CreateAction(output),
